@@ -164,6 +164,56 @@ def monitoring_ping_ataque(ue,nombreArchivo = None):
     net.getNodeByName('c0').cmd("pkill tcpdump")
 
 
+def monitoring_iperf_normal(ue,nombreArchivo = None):
+    # Parametros de la unidad experimental
+    setLogLevel("info")
+    info("Configurando unidad experimental\n")
+    info("Configurando trafico normal\n")
+    info("Configurando la red\n")
+    net = Mininet(topo = ue.getTopo(), controller=ue.getController(), link=TCLink, build=False)
+    info("wait 5s ...\n")
+    sleep(5) # Dando un tiempo de espera para que el controlador arranque
+    net.build()
+    # Configurando clase asociada al trafico
+    info("Configurando clase asociada al trafico\n")    
+    [A,C,V] = ue.obtenerNodosClaves()
+    C = net.get(C)
+    V = net.get(V)
+    t_normal = TraficoNormal(C,V)    
+    net.start()
+    info("wait 5s ...\n")
+    sleep(5)    
+    net.pingAll()
+    t_normal.pingMeasure(filename = nombreArchivo) # Llevando salida a un archivo
+    # BAN_CPU_MEASURE = False
+    info("wait 2s ...\n")
+    sleep(2)
+    net.stop() 
+
+def monitoring_iperf_ataque(ue,nombreArchivo = None, t_medida = 10, t_start_ataque = 4):
+    # Parametros de la unidad experimental
+    setLogLevel("info")
+    info("Configurando unidad experimental\n")
+    info("Configurando trafico normal\n")
+    info("Configurando la red\n")
+    net = Mininet(topo = ue.getTopo(), controller=ue.getController(), link=TCLink ,build=False)
+    net.build()
+    info("Waiting 5 seconds...\n")
+    sleep(5)
+    # Configurando clase asociada al trafico
+    info("Configurando clase asociada al trafico\n")    
+    [A,C,V] = ue.obtenerNodosClaves()
+    A = net.get(A)
+    C = net.get(C)
+    V = net.get(V)
+    t_ataque = TraficoAtaque(A,C,V)
+    # Arrancando la red
+    net.start()
+    net.pingAll()
+    t_ataque.iperfMeasure(filename = nombreArchivo, tiempo=t_medida,t_inicio_atk=t_start_ataque) # Llevando salida a un archivo
+    info("wait 2s ...\n")
+    sleep(2)
+    net.stop()
 
 # Problema - Solo es llamado una sola vez  ---- https://www.geeksforgeeks.org/python-different-ways-to-kill-a-thread/
 def getCPUMeasure(*args):
@@ -189,8 +239,13 @@ def getCPUMeasure(*args):
 
 
 if __name__ == "__main__":
+    print "Realizando pruebas\n"
     # monitoring_ping_normal(ue_ryu,'ping_normal_ryu.log')
     # monitoring_ping_ataque(ue_ryu,'ping_ataque_ryu.log')
     # monitoring_ping_normal(ue_pox,'ping_normal_pox.log')
-    monitoring_ping_ataque(ue_pox,'ping_ataque_pox.log')
-    
+    # monitoring_ping_ataque(ue_pox,'ping_ataque_pox.log')
+    # monitoring_iperf_normal(ue_ryu,'iperf_normal_ryu.log')
+    # monitoring_iperf_normal(ue_pox,'iperf_normal_pox.log')
+    # monitoring_iperf_ataque(ue_ryu,'iperf_ataque_ryu.log')
+    # monitoring_iperf_ataque(ue_pox,'iperf_ataque_pox.log')
+          
