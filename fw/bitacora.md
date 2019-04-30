@@ -44,6 +44,14 @@ A continuacion se lista el codigo que se encuentra en etapa casi de culminacion:
 5. disenoExperimental.py (Codificado, probado). 
 6. experimento.py (Codificado pero hay problemas en la prueba, esto pues se no se lanzan metricas con trafico normal y de ataque).
 
+## Abril 30 de 2019 ## 
+
+### Actividades hechas ###
+
+1. Se creo un nuevo repositorio en: https://github.com/tigarto/test_dos
+2. Este repotorio tiene dos ramas: master y alpha. **Por el momento los cambios y nuevos agregados al codigo se haran en la rama alpha**.
+
+
 ## Enlaces de interes ##
 1. https://www.python-course.eu/forking.php
 2. https://pymotw.com/2/multiprocessing/basics.html
