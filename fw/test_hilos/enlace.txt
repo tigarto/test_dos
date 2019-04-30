@@ -1,0 +1,1 @@
+Estos codigos fueron tomados de: https://www.geeksforgeeks.org/python-different-ways-to-kill-a-thread/
